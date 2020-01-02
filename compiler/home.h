@@ -26,6 +26,8 @@ typedef struct {
   recognizer_t *recognizer;
   walker_t *generator;
 
+  text_t *path;
+
   text_t *group;
   home_post_t *post;
 
@@ -46,7 +48,7 @@ typedef struct {
 
 def_prototype_header(home_t);
 
-void home_compile(home_t *self, const char *in, const char *out);
+void home_compile(home_t *self, const char *home_path);
 
 void home_test();
 

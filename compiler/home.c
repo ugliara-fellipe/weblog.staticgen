@@ -130,6 +130,8 @@ static void _alloc_(home_t *self, args_t arguments) {
   walker_listener(self->generator, "group", group_enter, group_exit);
   walker_listener(self->generator, "item", item_enter, NULL);
 
+  self->path = alloc(text_t, "");
+
   self->group = alloc(text_t, "");
   self->post = alloc(home_post_t);
 
@@ -151,6 +153,8 @@ static void _alloc_(home_t *self, args_t arguments) {
 static void _free_(home_t *self) {
   dealloc(self->recognizer);
   dealloc(self->generator);
+
+  dealloc(self->path);
 
   dealloc(self->group);
   dealloc(self->post);
@@ -212,13 +216,20 @@ static void home_page_generate(home_t *self) {
   dealloc(posts);
 }
 
-void home_compile(home_t *self, const char *in, const char *out) {
+void home_compile(home_t *self, const char *home_path) {
+  text_set(self->path, home_path);
+  text_t *in = alloc(text_t, home_path);
+  text_append(in, "/home.blog");
   text_t *file = alloc(text_t, "");
-  text_from_file(file, in);
+  text_from_file(file, in->value);
+  dealloc(in);
   recognizer_perform(self->recognizer, file->value);
   walker_perform(self->generator, self->recognizer->parser->ast);
   home_page_generate(self);
-  text_to_file(self->page, out);
+  text_t *out = alloc(text_t, home_path);
+  text_append(out, "/index.html");
+  text_to_file(self->page, out->value);
+  dealloc(out);
   dealloc(file);
 }
 

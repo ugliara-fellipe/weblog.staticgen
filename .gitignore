@@ -1,6 +1,5 @@
 # Build Folder
 deploy
-out
 
 # Prerequisites
 *.d
