@@ -112,7 +112,8 @@ static void _alloc_(home_t *self, args_t arguments) {
   self->recognizer = alloc(recognizer_t);
 
   scanner_t *scanner = self->recognizer->scanner;
-  scanner_add_model(scanner, ":Comment", "^##(#N|#A|,|:|#.|/| |#(|#)|-)*\r?\n");
+  scanner_add_model(scanner, ":Comment",
+                    "^##(#N|#A|,|:|#.|/| |#(|#)|-|\")*\r?\n");
   scanner_add_model(scanner, "Tag", "^#A*");
   scanner_add_model(scanner, "Value", "^\"(#N|#A|,|:|#.|/| |-)*\"");
   scanner_add_model(scanner, ":Ignore", "^( |\r?\n)");
@@ -222,14 +223,19 @@ void home_compile(home_t *self, const char *home_path) {
   text_append(in, "/home.blog");
   text_t *file = alloc(text_t, "");
   text_from_file(file, in->value);
+  printf("Home Page %s\n", in->value);
   dealloc(in);
-  recognizer_perform(self->recognizer, file->value);
-  walker_perform(self->generator, self->recognizer->parser->ast);
-  home_page_generate(self);
-  text_t *out = alloc(text_t, home_path);
-  text_append(out, "/index.html");
-  text_to_file(self->page, out->value);
-  dealloc(out);
+  if (recognizer_perform(self->recognizer, file->value)) {
+    walker_perform(self->generator, self->recognizer->parser->ast);
+    home_page_generate(self);
+    text_t *out = alloc(text_t, home_path);
+    text_append(out, "/index.html");
+    text_to_file(self->page, out->value);
+    dealloc(out);
+    printf("Success\n\n");
+  } else {
+    printf("Failure\n\n");
+  }
   dealloc(file);
 }
 

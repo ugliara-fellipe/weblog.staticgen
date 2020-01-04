@@ -10,11 +10,14 @@
 
 int main() {
   home_t *home = alloc(home_t);
+  printf("Weblog Staticgen\n\n");
   post_t *post = alloc(post_t);
 
   home_compile(home, "../weblog.pages");
   list_for(home->posts, index, home_post_t, item,
            { post_compile(post, home, item); });
+
+  printf("Done\n");
 
   dealloc(post);
   dealloc(home);

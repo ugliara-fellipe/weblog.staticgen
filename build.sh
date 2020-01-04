@@ -20,8 +20,7 @@ MODULE_INC="-I $EXTEND/include"
 EXTEND_INC="$MODULE_INC/extend $MODULE_INC/regex $MODULE_INC/recognizer"
 EXTEND_LIB="-L $EXTEND/lib/ -l extend"
 
-clang compiler/home.c -c $EXTEND_INC -o deploy/object/home.o
-clang compiler/post.c -c $EXTEND_INC -o deploy/object/post.o
-clang compiler/site.c -c $EXTEND_INC -o deploy/object/site.o
+clang compiler/home.c -c $EXTEND_INC -o deploy/object/home.o -O2
+clang compiler/post.c -c $EXTEND_INC -o deploy/object/post.o -O2
 
-clang cli.c deploy/object/*.o -I compiler $EXTEND_INC $EXTEND_LIB -o deploy/staticgen
+clang cli.c deploy/object/*.o -I compiler $EXTEND_INC $EXTEND_LIB -o deploy/staticgen -O2

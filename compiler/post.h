@@ -17,6 +17,7 @@ typedef struct {
   walker_t *generator;
 
   text_t *page;
+  text_t *post;
 } post_t;
 
 def_prototype_header(post_t);
