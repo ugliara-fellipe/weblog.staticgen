@@ -229,15 +229,15 @@ static void _alloc_(post_t *self, args_t arguments) {
   grammar_rule(grammar, "init", "block :init | block Eot");
   grammar_rule(
       grammar, "block",
-      "session | subsession | text | quote | ordered | unordered | code");
+      "session | subsession | text | quote | ordered | unordered | code | image");
   grammar_rule(grammar, "session", "Session Text CloseBlock");
   grammar_rule(grammar, "subsession", "SubSession Text CloseBlock");
   grammar_rule(grammar, "part", "subpart :part | subpart");
   grammar_rule(grammar, "subpart",
-               "parttext | bold | linebreak | italic | image | link");
+               "parttext | bold | linebreak | italic | link");
   grammar_rule(grammar, "linebreak", "LineBreak");
   grammar_rule(grammar, "parttext", "Text");
-  grammar_rule(grammar, "image", "Image Text Image Text Image");
+  grammar_rule(grammar, "image", "Image Text Image Text Image CloseBlock");
   grammar_rule(grammar, "link", "Link Text Link Text Link");
   grammar_rule(grammar, "bold", "Bold Text Bold");
   grammar_rule(grammar, "italic", "Italic Text Italic");
