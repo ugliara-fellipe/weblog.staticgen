@@ -24,9 +24,9 @@ static void session_enter(ast_item_t *rule, object_t context) {
   replace_text_special_char(temp);
   text_trim(temp);
 
-  text_append(post->post, "<h2>");
+  text_append(post->post, "    <h2>");
   text_append(post->post, temp->value);
-  text_append(post->post, "</h2>");
+  text_append(post->post, "</h2>\n\n");
 
   dealloc(temp);
 }
@@ -39,9 +39,9 @@ static void subsession_enter(ast_item_t *rule, object_t context) {
   replace_text_special_char(temp);
   text_trim(temp);
 
-  text_append(post->post, "<h3>");
+  text_append(post->post, "    <h3>");
   text_append(post->post, temp->value);
-  text_append(post->post, "</h3>");
+  text_append(post->post, "</h3>\n\n");
 
   dealloc(temp);
 }
@@ -117,16 +117,16 @@ static void image_enter(ast_item_t *rule, object_t context) {
   text_t *temp = copy(name->value);
   replace_text_special_char(temp);
 
-  text_append(post->post, "<center>"
-                          "<div class=\"horizontal-scroll\">"
-                          "<img class=\"illustration\" src=\"");
+  text_append(post->post, "    <center>\n"
+                          "      <div class=\"horizontal-scroll\">\n"
+                          "        <img class=\"illustration\" src=\"");
   text_append(post->post, link->value->value);
-  text_append(post->post, "\" />"
-                          "</div>"
-                          "<figcaption>");
+  text_append(post->post, "\" />\n"
+                          "      </div>\n"
+                          "      <figcaption>");
   text_append(post->post, temp->value);
-  text_append(post->post, "</figcaption>"
-                          "</center>");
+  text_append(post->post, "</figcaption>\n"
+                          "    </center>\n\n");
 
   dealloc(temp);
 }
@@ -134,6 +134,9 @@ static void image_enter(ast_item_t *rule, object_t context) {
 static void replace_code_special_char(text_t *text) {
   text_replace(text, "'!", "!");
   text_replace(text, "''", "'");
+  text_replace(text, "\r\n", "&#10;");
+  text_replace(text, "\n", "&#10;");
+  text_replace(text, " ", "&#32;");
 }
 
 static void code_enter(ast_item_t *rule, object_t context) {
@@ -142,63 +145,63 @@ static void code_enter(ast_item_t *rule, object_t context) {
 
   text_t *temp = copy(text->value);
   text_sub(temp, 3, text_size(temp) - 6);
-  replace_code_special_char(temp);
   text_trim(temp);
+  replace_code_special_char(temp);
 
-  text_append(post->post, "<pre><code>");
+  text_append(post->post, "    <pre><code>");
   text_append(post->post, temp->value);
-  text_append(post->post, "</code></pre>");
+  text_append(post->post, "</code></pre>\n\n");
   dealloc(temp);
 }
 
 static void text_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "<p>");
+  text_append(post->post, "    <p>");
 }
 
 static void text_exit(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "</p>");
+  text_append(post->post, "</p>\n\n");
 }
 
 static void quote_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "<blockquote><p>");
+  text_append(post->post, "    <blockquote>\n      <p>");
 }
 
 static void quote_exit(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "</p></blockquote>");
+  text_append(post->post, "</p>\n    </blockquote>\n\n");
 }
 
 static void ordered_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "<ul>");
+  text_append(post->post, "    <ul>\n");
 }
 
 static void ordered_exit(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "</ul>");
+  text_append(post->post, "    </ul>\n\n");
 }
 
 static void unordered_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "<ol>");
+  text_append(post->post, "    <ol>\n");
 }
 
 static void unordered_exit(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "</ol>");
+  text_append(post->post, "    </ol>\n\n");
 }
 
 static void item_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "<li>");
+  text_append(post->post, "      <li>");
 }
 
 static void item_exit(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  text_append(post->post, "</li>");
+  text_append(post->post, "</li>\n");
 }
 
 static void _alloc_(post_t *self, args_t arguments) {
@@ -227,9 +230,9 @@ static void _alloc_(post_t *self, args_t arguments) {
 
   grammar_t *grammar = self->recognizer->parser->grammar;
   grammar_rule(grammar, "init", "block :init | block Eot");
-  grammar_rule(
-      grammar, "block",
-      "session | subsession | text | quote | ordered | unordered | code | image");
+  grammar_rule(grammar, "block",
+               "session | subsession | text | quote | ordered | unordered | "
+               "code | image");
   grammar_rule(grammar, "session", "Session Text CloseBlock");
   grammar_rule(grammar, "subsession", "SubSession Text CloseBlock");
   grammar_rule(grammar, "part", "subpart :part | subpart");
@@ -308,6 +311,7 @@ static void post_page_generate(post_t *self, home_t *home,
   text_replace(self->page, "$post_group", home_post->group->value);
   text_replace(self->page, "$post_title", home_post->title->value);
 
+  text_trim(self->post);
   text_replace(self->page, "$post", self->post->value);
 }
 
