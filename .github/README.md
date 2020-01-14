@@ -13,13 +13,12 @@ library before build **staticgen**.
 
 Use the Advanced Package Tool [apt](https://en.wikipedia.org/wiki/APT_\(software\)) 
 to install the dependencies necessary to build and format the project. The compiler 
-[clang](https://en.wikipedia.org/wiki/Clang) is used to compile the project, the 
-source codes are formated using [clang-format](http://clang.llvm.org/docs/ClangFormat.html), 
-and the final static library is made with [ar](https://en.wikipedia.org/wiki/Ar_\(Unix\)).
+[clang](https://en.wikipedia.org/wiki/Clang) is used to compile the project, and the 
+source codes are formated using [clang-format](http://clang.llvm.org/docs/ClangFormat.html).
 Run the next command in Linux (Debian like distros) to install the dependencies.
 
 ```bash
-sudo apt install clang ar clang-format
+sudo apt install clang clang-format
 ```
 
 Use the script *build.sh* to compile the project and to generate the deploy folder 
