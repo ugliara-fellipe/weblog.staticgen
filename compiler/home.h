@@ -17,6 +17,7 @@ typedef struct {
   text_t *show;
   text_t *group;
   text_t *link;
+  text_t *path;
   text_t *title;
 } home_post_t;
 

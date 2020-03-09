@@ -7,6 +7,7 @@
 #include "home.h"
 #include "post.h"
 #include "prototype.h"
+#include "text.h"
 
 int main() {
   home_t *home = alloc(home_t);
@@ -14,8 +15,11 @@ int main() {
   post_t *post = alloc(post_t);
 
   home_compile(home, "../weblog.pages");
-  list_for(home->posts, index, home_post_t, item,
-           { post_compile(post, home, item); });
+  list_for(home->posts, index, home_post_t, item, {
+    if (!text_compare(item->link, "")) {
+      post_compile(post, home, item);
+    }
+  });
 
   printf("Done\n");
 

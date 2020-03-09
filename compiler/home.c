@@ -14,6 +14,7 @@ static void _alloc_post_(home_post_t *self, args_t arguments) {
   self->show = alloc(text_t, "");
   self->group = alloc(text_t, "");
   self->link = alloc(text_t, "");
+  self->path = alloc(text_t, "");
   self->title = alloc(text_t, "");
 }
 
@@ -22,6 +23,7 @@ static void _free_post_(home_post_t *self) {
   dealloc(self->show);
   dealloc(self->group);
   dealloc(self->link);
+  dealloc(self->path);
   dealloc(self->title);
 }
 
@@ -101,6 +103,9 @@ static void item_enter(ast_item_t *rule, object_t context) {
     } else if (text_compare(tag->value, "link")) {
       text_set(home->post->link, value->value->value);
       value_remove_quotes(home->post->link);
+    } else if (text_compare(tag->value, "path")) {
+      text_set(home->post->path, value->value->value);
+      value_remove_quotes(home->post->path);
     } else if (text_compare(tag->value, "title")) {
       text_set(home->post->title, value->value->value);
       value_remove_quotes(home->post->title);
@@ -200,12 +205,18 @@ static void home_page_generate(home_t *self) {
              "    <div class=\"info\">\n"
              "      <time datetime=\"$date\">$show</time> # $group\n"
              "    </div>\n"
-             "    <a href=\"$link\">$title</a>\n"
+             "    <a href=\"$link\"$tab>$title</a>\n"
              "  </article>\n\n");
     text_replace(post_template, "$date", post->date->value);
     text_replace(post_template, "$show", post->show->value);
     text_replace(post_template, "$group", post->group->value);
-    text_replace(post_template, "$link", post->link->value);
+    if (!text_compare(post->link, "")) {
+      text_replace(post_template, "$link", post->link->value);
+      text_replace(post_template, "$tab", "");
+    } else {
+      text_replace(post_template, "$link", post->path->value);
+      text_replace(post_template, "$tab", " target=\"_blank\"");
+    }
     text_replace(post_template, "$title", post->title->value);
     text_append(posts, post_template->value);
   });
