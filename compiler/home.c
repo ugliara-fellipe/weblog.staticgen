@@ -118,9 +118,9 @@ static void _alloc_(home_t *self, args_t arguments) {
 
   scanner_t *scanner = self->recognizer->scanner;
   scanner_add_model(scanner, ":Comment",
-                    "^##(#N|#A|,|:|#.|/| |#(|#)|-|\")*\r?\n");
+                    "^##(#N|#A|,|:|#.|/| |#(|#)|-|'|\")*\r?\n");
   scanner_add_model(scanner, "Tag", "^#A*");
-  scanner_add_model(scanner, "Value", "^\"(#N|#A|,|:|#.|/| |-)*\"");
+  scanner_add_model(scanner, "Value", "^\"(#N|#A|,|:|#.|/| |-|')*\"");
   scanner_add_model(scanner, ":Ignore", "^( |\r?\n)");
 
   grammar_t *grammar = self->recognizer->parser->grammar;

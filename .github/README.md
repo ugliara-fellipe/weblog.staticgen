@@ -61,8 +61,8 @@ written below.
 #
 
 weblog
-  title       "Research Outline"
-  description "Weblog - Research Outline"
+  title       "Ugliara's Notebook"
+  description "Weblog - Ugliara's Notebook"
   keywords    "Weblog,Computer,Mathematics,Profile"
 
 license
