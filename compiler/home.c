@@ -33,8 +33,10 @@ static bool _equal_post_(home_post_t *self, home_post_t *object) {
   return false;
 }
 
+static void _inspect_post_(home_post_t *self, inspect_t *inspect) {}
+
 def_prototype_source(home_post_t, _alloc_post_, _free_post_, _copy_post_,
-                     _equal_post_);
+                     _equal_post_, _inspect_post_);
 
 static void value_remove_quotes(text_t *value) {
   text_sub(value, 1, text_size(value) - 2);
@@ -184,7 +186,9 @@ static void _copy_(home_t *self, home_t *object) {}
 
 static bool _equal_(home_t *self, home_t *object) { return false; }
 
-def_prototype_source(home_t, _alloc_, _free_, _copy_, _equal_);
+static void _inspect_(home_t *self, inspect_t *inspect) {}
+
+def_prototype_source(home_t, _alloc_, _free_, _copy_, _equal_, _inspect_);
 
 static void home_page_generate(home_t *self) {
   text_from_file(self->page, "template/home.html");

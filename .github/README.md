@@ -7,9 +7,10 @@ depends on the C11 standard library and Extend library.
 
 ## Build and Format
 
-*Important*: This project requires the **extend** library 
-(<https://github.com/ugliara-fellipe/library.extend>), clone and compile the 
-library before build **staticgen**.
+*Important*: This project requires the **prototype** 
+(<https://github.com/ugliara-fellipe/library.prototype>) and **extend** 
+(<https://github.com/ugliara-fellipe/library.extend>) libraries, clone and 
+compile the libraries before build **staticgen**.
 
 Use the Advanced Package Tool [apt](https://en.wikipedia.org/wiki/APT_\(software\)) 
 to install the dependencies necessary to build and format the project. The compiler 

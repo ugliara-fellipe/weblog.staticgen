@@ -292,7 +292,9 @@ static void _copy_(post_t *self, post_t *object) {}
 
 static bool _equal_(post_t *self, post_t *object) { return true; }
 
-def_prototype_source(post_t, _alloc_, _free_, _copy_, _equal_);
+static void _inspect_(post_t *self, inspect_t *inspect) {}
+
+def_prototype_source(post_t, _alloc_, _free_, _copy_, _equal_, _inspect_);
 
 static void post_page_generate(post_t *self, home_t *home,
                                home_post_t *home_post) {
