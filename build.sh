@@ -6,8 +6,8 @@
 #
 # --------------------
 #
-# Run this script to deploy extend library and tests
-# It require clang, and ar; to install use the command:
+# Run this script to deploy staticgen cli and tests
+# It require clang; to install use the command:
 #
 #   $ sudo apt install clang
 #
@@ -15,17 +15,17 @@ rm -rf ./deploy
 mkdir deploy
 mkdir deploy/object
 
-PROTOTYPE="../library.prototype/deploy"
-MODULE_INC_1="-I $PROTOTYPE/include"
-PROTOTYPE_INC="$MODULE_INC_1/container $MODULE_INC_1/primitive $MODULE_INC_1/prototype"
-PROTOTYPE_LIB="-L $PROTOTYPE/lib/ -l prototype"
+DATATYPE="../library.datatype/deploy"
+MODULE_INC="-I $DATATYPE/include"
+DATATYPE_INC="$MODULE_INC/abstract $MODULE_INC/composite $MODULE_INC/other $MODULE_INC/primitive $MODULE_INC/toolbelt"
+DATATYPE_OBJS="$DATATYPE/object/*.o"
 
-EXTEND="../library.extend/deploy"
-MODULE_INC_2="-I $EXTEND/include"
-EXTEND_INC="$MODULE_INC_2/extend $MODULE_INC_2/regex $MODULE_INC_2/recognizer"
-EXTEND_LIB="-L $EXTEND/lib/ -l extend"
+LANGUAGE="../library.language/deploy"
+MODULE_INC_LANG="-I $LANGUAGE/include"
+LANGUAGE_INC="$MODULE_INC_LANG/regex $MODULE_INC_LANG/recognizer"
+LANGUAGE_OBJS="$LANGUAGE/object/*.o"
 
-clang compiler/home.c -c $EXTEND_INC $PROTOTYPE_INC -o deploy/object/home.o
-clang compiler/post.c -c $EXTEND_INC $PROTOTYPE_INC -o deploy/object/post.o
+clang compiler/home.c -c $DATATYPE_INC $LANGUAGE_INC -o deploy/object/home.o
+clang compiler/post.c -c $DATATYPE_INC $LANGUAGE_INC -o deploy/object/post.o
 
-clang cli.c deploy/object/*.o -I compiler $EXTEND_INC $EXTEND_LIB $PROTOTYPE_INC $PROTOTYPE_LIB -o deploy/staticgen
+clang cli.c deploy/object/*.o -I compiler $DATATYPE_INC $DATATYPE_OBJS $LANGUAGE_INC $LANGUAGE_OBJS -o deploy/staticgen
