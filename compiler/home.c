@@ -6,6 +6,7 @@
 //
 #include "home.h"
 #include "ast.h"
+#include "inspect.h"
 #include "text.h"
 #include "token.h"
 
