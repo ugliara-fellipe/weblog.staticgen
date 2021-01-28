@@ -4,8 +4,8 @@
 // Use of this source code is governed by an ISC license that can be found
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
 //
-#include "post.h"
-#include "inspect.h"
+#include "compiler/post.h"
+#include "toolbelt.h"
 
 static void replace_text_special_char(text_t *text) {
   text_replace(text, "'#", "#");

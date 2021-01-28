@@ -7,10 +7,8 @@
 #ifndef HOME_H
 #define HOME_H
 
-#include "list.h"
-#include "prototype.h"
-#include "recognizer.h"
-#include "walker.h"
+#include "language.h"
+#include "toolbelt.h"
 
 typedef struct {
   text_t *date;

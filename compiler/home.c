@@ -4,11 +4,9 @@
 // Use of this source code is governed by an ISC license that can be found
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
 //
-#include "home.h"
-#include "ast.h"
-#include "inspect.h"
-#include "text.h"
-#include "token.h"
+#include "compiler/home.h"
+#include "toolbelt.h"
+#include "language.h"
 
 static void _alloc_post_(home_post_t *self, args_t arguments) {
   self->date = alloc(text_t, "");

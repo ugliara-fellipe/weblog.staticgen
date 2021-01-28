@@ -7,10 +7,9 @@
 #ifndef POST_H
 #define POST_H
 
-#include "home.h"
-#include "prototype.h"
-#include "recognizer.h"
-#include "walker.h"
+#include "compiler/home.h"
+#include "language.h"
+#include "toolbelt.h"
 
 typedef struct {
   recognizer_t *recognizer;

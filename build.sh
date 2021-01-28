@@ -15,17 +15,15 @@ rm -rf ./deploy
 mkdir deploy
 mkdir deploy/object
 
-DATATYPE="../library.datatype/deploy"
-MODULE_INC="-I $DATATYPE/include"
-DATATYPE_INC="$MODULE_INC/abstract $MODULE_INC/composite $MODULE_INC/other $MODULE_INC/primitive $MODULE_INC/toolbelt"
-DATATYPE_OBJS="$DATATYPE/object/*.o"
+TOOLBELT="../library.toolbelt/deploy"
+TOOLBELT_INC="-I $TOOLBELT/include"
+TOOLBELT_OBJS="$TOOLBELT/object/*.o"
 
 LANGUAGE="../library.language/deploy"
-MODULE_INC_LANG="-I $LANGUAGE/include"
-LANGUAGE_INC="$MODULE_INC_LANG/regex $MODULE_INC_LANG/recognizer"
+LANGUAGE_INC="-I $LANGUAGE/include"
 LANGUAGE_OBJS="$LANGUAGE/object/*.o"
 
-clang compiler/home.c -c $DATATYPE_INC $LANGUAGE_INC -o deploy/object/home.o
-clang compiler/post.c -c $DATATYPE_INC $LANGUAGE_INC -o deploy/object/post.o
+clang compiler/home.c -c -I . $TOOLBELT_INC $LANGUAGE_INC -o deploy/object/home.o
+clang compiler/post.c -c -I . $TOOLBELT_INC $LANGUAGE_INC -o deploy/object/post.o
 
-clang cli.c deploy/object/*.o -I compiler $DATATYPE_INC $DATATYPE_OBJS $LANGUAGE_INC $LANGUAGE_OBJS -o deploy/staticgen
+clang cli.c deploy/object/*.o -I . $TOOLBELT_INC $TOOLBELT_OBJS $LANGUAGE_INC $LANGUAGE_OBJS -o deploy/staticgen
