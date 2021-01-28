@@ -5,8 +5,8 @@
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
 //
 #include "compiler/home.h"
-#include "toolbelt.h"
 #include "language.h"
+#include "toolbelt.h"
 
 static void _alloc_post_(home_post_t *self, args_t arguments) {
   self->date = alloc(text_t, "");

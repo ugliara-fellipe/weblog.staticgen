@@ -8,6 +8,34 @@
 #include "compiler/post.h"
 #include "toolbelt.h"
 
+const char info_help[] =
+    "Usage: staticgen [FOLDER|--help|--license]\n"
+    "Static Weblog Generator makes the Html files of a weblog \n"
+    "site from files written with a markup language.\n"
+    "\n"
+    "Compile weblog in the FOLDER path.\n"
+    "\n"
+    "  --help     display this help and exit\n"
+    "  --license  output license and exit\n";
+
+const char info_license[] =
+    "ISC License\n"
+    "\n"
+    "Copyright (c) 2020, Fellipe Augusto Ugliara\n"
+    "\n"
+    "Permission to use, copy, modify, and/or distribute this software for any\n"
+    "purpose with or without fee is hereby granted, provided that the above\n"
+    "copyright notice and this permission notice appear in all copies.\n"
+    "\n"
+    "THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL "
+    "WARRANTIES\n"
+    "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\n"
+    "MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\n"
+    "ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\n"
+    "WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\n"
+    "ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\n"
+    "OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n";
+
 int main(int argc, char **argv) {
   if (argc < 2) {
     term_error("no imput folder\n");
@@ -20,42 +48,12 @@ int main(int argc, char **argv) {
   }
 
   if (strcmp(argv[1], "--help") == 0) {
-    printf("Usage: staticgen [FOLDER|--help|--license]\n");
-    printf("Static Weblog Generator makes the Html files of a weblog \n");
-    printf("site from files written with a markup language.\n");
-    printf("\n");
-    printf("Compile weblog in the FOLDER path.\n");
-    printf("\n");
-    printf("  --help     display this help and exit\n");
-    printf("  --license  output license and exit\n");
+    printf(info_help);
     return EXIT_SUCCESS;
   }
 
   if (strcmp(argv[1], "--license") == 0) {
-    printf("ISC License\n");
-    printf("\n");
-    printf("Copyright (c) 2020, Fellipe Augusto Ugliara\n");
-    printf("\n");
-    printf("Permission to use, copy, modify, and/or distribute this software "
-           "for any\n");
-    printf("purpose with or without fee is hereby granted, provided that the "
-           "above\n");
-    printf(
-        "copyright notice and this permission notice appear in all copies.\n");
-    printf("\n");
-    printf("THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL "
-           "WARRANTIES\n");
-    printf(
-        "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\n");
-    printf("MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE "
-           "LIABLE FOR\n");
-    printf("ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY "
-           "DAMAGES\n");
-    printf("WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN "
-           "AN\n");
-    printf("ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING "
-           "OUT OF\n");
-    printf("OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n");
+    printf(info_license);
     return EXIT_SUCCESS;
   }
 

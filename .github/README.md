@@ -2,8 +2,8 @@
 
 Static Weblog Generator makes the Html files of a weblog site from files written 
 with a markup language. The generated files contain only Html and CSS code, they 
-are Javascript free and not require any server side dependencies. This project 
-depends on the C11 standard library, Toolbelt library, and Language library.
+are JavaScript free and not require any server side dependencies. This project 
+depends on the C11 standard library, toolbelt library, and language library.
 
 ## Build and Format
 

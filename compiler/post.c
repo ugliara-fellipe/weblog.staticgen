@@ -214,7 +214,7 @@ static void _alloc_(post_t *self, args_t arguments) {
   scanner_add_model(scanner, "Session", "^#*#* ?");
   scanner_add_model(scanner, "SubSession", "^#*#*#* ?");
   scanner_add_model(scanner, "Text",
-                    "^('(##|#^|~|#*|#`|!|')|#N|#A|,|:|#.|/"
+                    "^('(##|#^|~|#*|#`|!|')|#N|#A|,|&|:|#.|/"
                     "|#(|#)|[|]|{|}|-|#+|@| |;|$|=|_|\\|%|\"|#?)+");
   scanner_add_model(scanner, "Bold", "^`");
   scanner_add_model(scanner, "Italic", "^``");
@@ -223,7 +223,7 @@ static void _alloc_(post_t *self, args_t arguments) {
   scanner_add_model(scanner, "Link", "^!");
   scanner_add_model(scanner, "Image", "^!!");
   scanner_add_model(scanner, "Code",
-                    "^!!!('(!|')|##|#^|~|#*|#`|#N|#A|,|:|#.|/"
+                    "^!!!('(!|')|##|#^|~|#*|#`|#N|#A|,|&|:|#.|/"
                     "|#(|#)|[|]|{|}|-|#+|@| |;|$|=|_|\\|%|\"|#?|\r?\n)+!!!");
   scanner_add_model(scanner, "LineBreak", "^#^");
   scanner_add_model(scanner, ":TextBreak", "^\r?\n");
