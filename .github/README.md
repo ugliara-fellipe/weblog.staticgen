@@ -55,27 +55,36 @@ written below.
 
 ```
 #
-# Copyright (c) 2019, Fellipe Augusto Ugliara
+# Copyright 2019 Fellipe Augusto Ugliara
 #
 # Use of this source code is governed by an ISC license that can be found 
 # in the LICENSE file at https://github.com/ugliara-fellipe/weblog.pages
 #
 
 weblog
-  title       "Ugliara's Notebook"
-  description "Weblog - Ugliara's Notebook"
-  keywords    "Weblog,Computer,Mathematics,Profile"
+  title       "Writing Notebook"
+  description "Weblog - Writing Notebook"
+  keywords    "Weblog,Computer,Mathematics,Philosophy,Profile"
+
+copyright
+  year   "2020"
+  holder "Fellipe Augusto Ugliara"
 
 license
-  holder "Fellipe Augusto Ugliara"
-  link   "https://github.com/ugliara-fellipe/ugliara-fellipe.github.io"
-  type   "ISC"
-  file   "LICENSE"
-  date   "2019"
+  link "https://github.com/ugliara-fellipe/ugliara-fellipe.github.io"
+  type "ISC"
+  file "LICENSE"
+
+content
+  link "https://github.com/ugliara-fellipe/ugliara-fellipe.github.io"
+  site "http://creativecommons.org/licenses/by/4.0/"
+  type "CC BY 4.0"
+  name "Creative Commons Attribution 4.0 International License"
+  file "CONTENT"
 
 post
-  date  "2019-06-13"
-  show  "June 13, 2019"
+  date  "2021-01-28"
+  show  "January 28, 2021"
   group "Profile"
   link  "resume/resume.html"
   title "Resume and Contact"
@@ -169,7 +178,7 @@ would like to change. Read
 for details on our code of conduct, and the process for submitting pull requests.
 
 ## License
-Copyright (c) 2020, Fellipe Augusto Ugliara
+Copyright 2020 Fellipe Augusto Ugliara
 
 Use of this source code is governed by an ISC license that can be found 
 in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen

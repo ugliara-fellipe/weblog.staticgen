@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020, Fellipe Augusto Ugliara
+// Copyright 2020 Fellipe Augusto Ugliara
 //
 // Use of this source code is governed by an ISC license that can be found
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
@@ -74,11 +74,16 @@ static void item_enter(ast_item_t *rule, object_t context) {
       text_set(home->weblog_keywords, value->value->value);
       value_remove_quotes(home->weblog_keywords);
     }
-  } else if (text_compare(home->group, "license")) {
+  } else if (text_compare(home->group, "copyright")) {
     if (text_compare(tag->value, "holder")) {
       text_set(home->license_holder, value->value->value);
       value_remove_quotes(home->license_holder);
-    } else if (text_compare(tag->value, "link")) {
+    } else if (text_compare(tag->value, "year")) {
+      text_set(home->license_date, value->value->value);
+      value_remove_quotes(home->license_date);
+    }
+  } else if (text_compare(home->group, "license")) {
+    if (text_compare(tag->value, "link")) {
       text_set(home->license_link, value->value->value);
       value_remove_quotes(home->license_link);
     } else if (text_compare(tag->value, "type")) {
@@ -87,9 +92,23 @@ static void item_enter(ast_item_t *rule, object_t context) {
     } else if (text_compare(tag->value, "file")) {
       text_set(home->license_file, value->value->value);
       value_remove_quotes(home->license_file);
-    } else if (text_compare(tag->value, "date")) {
-      text_set(home->license_date, value->value->value);
-      value_remove_quotes(home->license_date);
+    }
+  } else if (text_compare(home->group, "content")) {
+    if (text_compare(tag->value, "link")) {
+      text_set(home->content_link, value->value->value);
+      value_remove_quotes(home->content_link);
+    } else if (text_compare(tag->value, "site")) {
+      text_set(home->content_site, value->value->value);
+      value_remove_quotes(home->content_site);
+    } else if (text_compare(tag->value, "type")) {
+      text_set(home->content_type, value->value->value);
+      value_remove_quotes(home->content_type);
+    } else if (text_compare(tag->value, "name")) {
+      text_set(home->content_name, value->value->value);
+      value_remove_quotes(home->content_name);
+    } else if (text_compare(tag->value, "file")) {
+      text_set(home->content_file, value->value->value);
+      value_remove_quotes(home->content_file);
     }
   } else if (text_compare(home->group, "post")) {
     if (text_compare(tag->value, "date")) {
@@ -147,10 +166,17 @@ static void _alloc_(home_t *self, args_t arguments) {
   self->weblog_keywords = alloc(text_t, "");
 
   self->license_holder = alloc(text_t, "");
+  self->license_date = alloc(text_t, "");
+
   self->license_link = alloc(text_t, "");
   self->license_type = alloc(text_t, "");
   self->license_file = alloc(text_t, "");
-  self->license_date = alloc(text_t, "");
+
+  self->content_file = alloc(text_t, "");
+  self->content_link = alloc(text_t, "");
+  self->content_name = alloc(text_t, "");
+  self->content_site = alloc(text_t, "");
+  self->content_type = alloc(text_t, "");
 
   self->posts = alloc(list_t);
 
@@ -171,10 +197,17 @@ static void _free_(home_t *self) {
   dealloc(self->weblog_keywords);
 
   dealloc(self->license_holder);
+  dealloc(self->license_date);
+
   dealloc(self->license_link);
   dealloc(self->license_type);
   dealloc(self->license_file);
-  dealloc(self->license_date);
+
+  dealloc(self->content_file);
+  dealloc(self->content_link);
+  dealloc(self->content_name);
+  dealloc(self->content_site);
+  dealloc(self->content_type);
 
   dealloc(self->posts);
 
@@ -199,6 +232,11 @@ static void home_page_generate(home_t *self) {
   text_replace(self->page, "$title", self->weblog_title->value);
   text_replace(self->page, "$description", self->weblog_description->value);
   text_replace(self->page, "$keywords", self->weblog_keywords->value);
+  text_replace(self->page, "$content_name", self->content_name->value);
+  text_replace(self->page, "$content_site", self->content_site->value);
+  text_replace(self->page, "$content_file", self->content_file->value);
+  text_replace(self->page, "$content_link", self->content_link->value);
+  text_replace(self->page, "$content_type", self->content_type->value);
 
   text_t *posts = alloc(text_t, "");
   text_t *post_template = alloc(text_t, "");

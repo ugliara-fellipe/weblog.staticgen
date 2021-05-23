@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020, Fellipe Augusto Ugliara
+// Copyright 2020 Fellipe Augusto Ugliara
 //
 // Use of this source code is governed by an ISC license that can be found
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
@@ -35,10 +35,17 @@ typedef struct {
   text_t *weblog_keywords;
 
   text_t *license_holder;
+  text_t *license_date;
+
   text_t *license_link;
   text_t *license_type;
   text_t *license_file;
-  text_t *license_date;
+
+  text_t *content_link;
+  text_t *content_type;
+  text_t *content_file;
+  text_t *content_name;
+  text_t *content_site;
 
   list_t *posts;
 

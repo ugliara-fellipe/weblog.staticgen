@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020, Fellipe Augusto Ugliara
+// Copyright 2020 Fellipe Augusto Ugliara
 //
 // Use of this source code is governed by an ISC license that can be found
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
@@ -300,6 +300,7 @@ def_prototype_source(post_t, _alloc_, _free_, _copy_, _equal_, _inspect_);
 static void post_page_generate(post_t *self, home_t *home,
                                home_post_t *home_post) {
   text_from_file(self->page, "template/post.html");
+
   text_replace(self->page, "$date", home->license_date->value);
   text_replace(self->page, "$holder", home->license_holder->value);
   text_replace(self->page, "$type", home->license_type->value);
@@ -308,6 +309,11 @@ static void post_page_generate(post_t *self, home_t *home,
   text_replace(self->page, "$title", home->weblog_title->value);
   text_replace(self->page, "$description", home->weblog_description->value);
   text_replace(self->page, "$keywords", home->weblog_keywords->value);
+  text_replace(self->page, "$content_name", home->content_name->value);
+  text_replace(self->page, "$content_site", home->content_site->value);
+  text_replace(self->page, "$content_file", home->content_file->value);
+  text_replace(self->page, "$content_link", home->content_link->value);
+  text_replace(self->page, "$content_type", home->content_type->value);
 
   text_replace(self->page, "$post_date", home_post->date->value);
   text_replace(self->page, "$post_show", home_post->show->value);

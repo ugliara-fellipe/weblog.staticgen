@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020, Fellipe Augusto Ugliara
+// Copyright 2020 Fellipe Augusto Ugliara
 //
 // Use of this source code is governed by an ISC license that can be found
 // in the LICENSE file at https://github.com/ugliara-fellipe/weblog.staticgen
@@ -21,7 +21,7 @@ const char info_help[] =
 const char info_license[] =
     "ISC License\n"
     "\n"
-    "Copyright (c) 2020, Fellipe Augusto Ugliara\n"
+    "Copyright 2020 Fellipe Augusto Ugliara\n"
     "\n"
     "Permission to use, copy, modify, and/or distribute this software for any\n"
     "purpose with or without fee is hereby granted, provided that the above\n"
@@ -62,6 +62,7 @@ int main(int argc, char **argv) {
   post_t *post = alloc(post_t);
 
   home_compile(home, argv[1]);
+
   list_for(home->posts, index, home_post_t, item, {
     if (!text_compare(item->link, "")) {
       post_compile(post, home, item);
