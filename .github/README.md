@@ -178,6 +178,7 @@ would like to change. Read
 for details on our code of conduct, and the process for submitting pull requests.
 
 ## Copyright and License
+
 Copyright 2020 Fellipe Augusto Ugliara
 
 Use of source codes are governed by an ISC license that can be found 
