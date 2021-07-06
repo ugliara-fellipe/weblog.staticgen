@@ -21,7 +21,7 @@ typedef struct {
 
 def_prototype_header(post_t);
 
-void post_compile(post_t *self, home_t *home, home_post_t *home_post);
+void post_compile(post_t *self, home_t *home, home_card_t *home_post);
 
 void post_test();
 

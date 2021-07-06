@@ -8,13 +8,15 @@
 #include "toolbelt.h"
 
 static void replace_text_special_char(text_t *text) {
-  text_replace(text, "'#", "#");
-  text_replace(text, "'^", "^");
-  text_replace(text, "'~", "~");
-  text_replace(text, "'*", "*");
-  text_replace(text, "'`", "`");
-  text_replace(text, "'!", "!");
-  text_replace(text, "''", "'");
+  text_replace(text, "\\\\", "\\");
+  text_replace(text, "\\+", "+");
+  text_replace(text, "\\*", "*");
+  text_replace(text, "\\^", "^");
+  text_replace(text, "\\[", "[");
+  text_replace(text, "\\]", "]");
+  text_replace(text, "\\#", "#");
+  text_replace(text, "\\{", "{");
+  text_replace(text, "\\}", "}");
 }
 
 static void session_enter(ast_item_t *rule, object_t context) {
@@ -34,7 +36,7 @@ static void session_enter(ast_item_t *rule, object_t context) {
 
 static void subsession_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
-  token_t *text = ast_get_token(rule, 1);
+  token_t *text = ast_get_token(rule, 2);
 
   text_t *temp = copy(text->value);
   replace_text_special_char(temp);
@@ -96,6 +98,7 @@ static void bold_enter(ast_item_t *rule, object_t context) {
 static void link_enter(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
   token_t *name = ast_get_token(rule, 1);
+  token_t *type = ast_get_token(rule, 2);
   token_t *link = ast_get_token(rule, 3);
 
   text_t *temp = copy(name->value);
@@ -103,55 +106,14 @@ static void link_enter(ast_item_t *rule, object_t context) {
 
   text_append(post->post, "<strong><a href=\"");
   text_append(post->post, link->value->value);
-  text_append(post->post, "\">");
+  if (text_compare(type->value, "+")) {
+    text_append(post->post, "\" target=\"_blank\">");
+  } else {
+    text_append(post->post, "\">");
+  }
   text_append(post->post, temp->value);
   text_append(post->post, "</a></strong>");
 
-  dealloc(temp);
-}
-
-static void image_enter(ast_item_t *rule, object_t context) {
-  post_t *post = cast(post_t *, context);
-  token_t *name = ast_get_token(rule, 1);
-  token_t *link = ast_get_token(rule, 3);
-
-  text_t *temp = copy(name->value);
-  replace_text_special_char(temp);
-
-  text_append(post->post, "    <center>\n"
-                          "      <div class=\"horizontal-scroll\">\n"
-                          "        <img class=\"illustration\" src=\"");
-  text_append(post->post, link->value->value);
-  text_append(post->post, "\" />\n"
-                          "      </div>\n"
-                          "      <figcaption>");
-  text_append(post->post, temp->value);
-  text_append(post->post, "</figcaption>\n"
-                          "    </center>\n\n");
-
-  dealloc(temp);
-}
-
-static void replace_code_special_char(text_t *text) {
-  text_replace(text, "'!", "!");
-  text_replace(text, "''", "'");
-  text_replace(text, "\r\n", "&#10;");
-  text_replace(text, "\n", "&#10;");
-  text_replace(text, " ", "&#32;");
-}
-
-static void code_enter(ast_item_t *rule, object_t context) {
-  post_t *post = cast(post_t *, context);
-  token_t *text = ast_get_token(rule, 0);
-
-  text_t *temp = copy(text->value);
-  text_sub(temp, 3, text_size(temp) - 6);
-  text_trim(temp);
-  replace_code_special_char(temp);
-
-  text_append(post->post, "    <pre><code>");
-  text_append(post->post, temp->value);
-  text_append(post->post, "</code></pre>\n\n");
   dealloc(temp);
 }
 
@@ -171,6 +133,16 @@ static void quote_enter(ast_item_t *rule, object_t context) {
 }
 
 static void quote_exit(ast_item_t *rule, object_t context) {
+  post_t *post = cast(post_t *, context);
+  text_append(post->post, "</p>\n    </blockquote>\n\n");
+}
+
+static void alert_enter(ast_item_t *rule, object_t context) {
+  post_t *post = cast(post_t *, context);
+  text_append(post->post, "    <blockquote class=\"alert\">\n      <p>");
+}
+
+static void alert_exit(ast_item_t *rule, object_t context) {
   post_t *post = cast(post_t *, context);
   text_append(post->post, "</p>\n    </blockquote>\n\n");
 }
@@ -210,42 +182,45 @@ static void _alloc_(post_t *self, args_t arguments) {
 
   scanner_t *scanner = self->recognizer->scanner;
   scanner_add_model(scanner, ":Comment", "^##(#N|#A|,|:|#.|/| |#(|#)|-)*\r?\n");
-  scanner_add_model(scanner, "Quote", "^#* ?");
-  scanner_add_model(scanner, "Session", "^#*#* ?");
-  scanner_add_model(scanner, "SubSession", "^#*#*#* ?");
-  scanner_add_model(scanner, "Text",
-                    "^('(##|#^|~|#*|#`|!|')|#N|#A|,|&|:|#.|/"
-                    "|#(|#)|[|]|{|}|-|#+|@| |;|$|=|_|\\|%|\"|#?)+");
-  scanner_add_model(scanner, "Bold", "^`");
-  scanner_add_model(scanner, "Italic", "^``");
-  scanner_add_model(scanner, "Ordered", "^~");
-  scanner_add_model(scanner, "Unordered", "^~~");
-  scanner_add_model(scanner, "Link", "^!");
-  scanner_add_model(scanner, "Image", "^!!");
-  scanner_add_model(scanner, "Code",
-                    "^!!!('(!|')|##|#^|~|#*|#`|#N|#A|,|&|:|#.|/"
-                    "|#(|#)|[|]|{|}|-|#+|@| |;|$|=|_|\\|%|\"|#?|\r?\n)+!!!");
+  scanner_add_model(scanner, "Quote", "^#+#+#+ ?");
+  scanner_add_model(scanner, "Alert", "^#*#*#* ?");
+  scanner_add_model(scanner, "SessionOpen", "^[ ?");
+  scanner_add_model(scanner, "SessionClose", "^ ?]");
+  scanner_add_model(
+      scanner, "Text",
+      "^( |!|\"|#$|%|~|&|'|#(|#)|,|-|#.|/"
+      "|#N|:|;|<|=|>|#?|@|#A|_|`|\\(\\|#+|#*|#^|[|]|##|{|})|#|)+");
+  scanner_add_model(scanner, "Star", "^#*");
+  scanner_add_model(scanner, "Plus", "^#+");
+  scanner_add_model(scanner, "Ordered", "^#+#+");
+  scanner_add_model(scanner, "Unordered", "^#*#*");
+  scanner_add_model(scanner, "LinkOpen", "^{ ?");
+  scanner_add_model(scanner, "LinkClose", "^ ?}");
   scanner_add_model(scanner, "LineBreak", "^#^");
   scanner_add_model(scanner, ":TextBreak", "^\r?\n");
   scanner_add_model(scanner, "CloseBlock", "^\r?\n\r?\n");
 
   grammar_t *grammar = self->recognizer->parser->grammar;
   grammar_rule(grammar, "init", "block :init | block Eot");
-  grammar_rule(grammar, "block",
-               "session | subsession | text | quote | ordered | unordered | "
-               "code | image");
-  grammar_rule(grammar, "session", "Session Text CloseBlock");
-  grammar_rule(grammar, "subsession", "SubSession Text CloseBlock");
+  grammar_rule(
+      grammar, "block",
+      "session | subsession | text | quote | alert | ordered | unordered");
+  grammar_rule(grammar, "session", "SessionOpen Text SessionClose CloseBlock");
+  grammar_rule(
+      grammar, "subsession",
+      "SessionOpen SessionOpen Text SessionClose SessionClose CloseBlock");
   grammar_rule(grammar, "part", "subpart :part | subpart");
   grammar_rule(grammar, "subpart",
                "parttext | bold | linebreak | italic | link");
   grammar_rule(grammar, "linebreak", "LineBreak");
   grammar_rule(grammar, "parttext", "Text");
-  grammar_rule(grammar, "image", "Image Text Image Text Image CloseBlock");
-  grammar_rule(grammar, "link", "Link Text Link Text Link");
-  grammar_rule(grammar, "bold", "Bold Text Bold");
-  grammar_rule(grammar, "italic", "Italic Text Italic");
+  grammar_rule(grammar, "link",
+               "LinkOpen Text Star Text LinkClose | LinkOpen Text Plus Text "
+               "LinkClose");
+  grammar_rule(grammar, "bold", "Star Text Star");
+  grammar_rule(grammar, "italic", "Plus Text Plus");
   grammar_rule(grammar, "quote", "Quote part Quote CloseBlock");
+  grammar_rule(grammar, "alert", "Alert part Alert CloseBlock");
   grammar_rule(grammar, "ordered",
                "ordereditem :ordered | ordereditem CloseBlock");
   grammar_rule(grammar, "ordereditem", "Ordered part");
@@ -253,7 +228,6 @@ static void _alloc_(post_t *self, args_t arguments) {
                "unordereditem :unordered | unordereditem CloseBlock");
   grammar_rule(grammar, "unordereditem", "Unordered part");
   grammar_rule(grammar, "text", "part CloseBlock");
-  grammar_rule(grammar, "code", "Code CloseBlock");
 
   grammar_begin(grammar, "init");
 
@@ -267,10 +241,9 @@ static void _alloc_(post_t *self, args_t arguments) {
   walker_listener(self->generator, "italic", italic_enter, NULL);
   walker_listener(self->generator, "bold", bold_enter, NULL);
   walker_listener(self->generator, "link", link_enter, NULL);
-  walker_listener(self->generator, "image", image_enter, NULL);
-  walker_listener(self->generator, "code", code_enter, NULL);
   walker_listener(self->generator, "text", text_enter, text_exit);
   walker_listener(self->generator, "quote", quote_enter, quote_exit);
+  walker_listener(self->generator, "alert", alert_enter, alert_exit);
   walker_listener(self->generator, "ordered", ordered_enter, ordered_exit);
   walker_listener(self->generator, "unordered", unordered_enter,
                   unordered_exit);
@@ -298,17 +271,17 @@ static void _inspect_(post_t *self, inspect_t *inspect) {}
 def_prototype_source(post_t, _alloc_, _free_, _copy_, _equal_, _inspect_);
 
 static void post_page_generate(post_t *self, home_t *home,
-                               home_post_t *home_post) {
+                               home_card_t *home_post) {
   text_from_file(self->page, "template/post.html");
 
-  text_replace(self->page, "$date", home->license_date->value);
-  text_replace(self->page, "$holder", home->license_holder->value);
+  text_replace(self->page, "$year", home->copyright_year->value);
+  text_replace(self->page, "$owner", home->copyright_owner->value);
   text_replace(self->page, "$type", home->license_type->value);
   text_replace(self->page, "$file", home->license_file->value);
   text_replace(self->page, "$link", home->license_link->value);
   text_replace(self->page, "$title", home->weblog_title->value);
-  text_replace(self->page, "$description", home->weblog_description->value);
-  text_replace(self->page, "$keywords", home->weblog_keywords->value);
+  text_replace(self->page, "$brief", home->weblog_brief->value);
+  text_replace(self->page, "$tags", home->weblog_tags->value);
   text_replace(self->page, "$content_name", home->content_name->value);
   text_replace(self->page, "$content_site", home->content_site->value);
   text_replace(self->page, "$content_file", home->content_file->value);
@@ -324,13 +297,13 @@ static void post_page_generate(post_t *self, home_t *home,
   text_replace(self->page, "$post", self->post->value);
 }
 
-void post_compile(post_t *self, home_t *home, home_post_t *home_post) {
+void post_compile(post_t *self, home_t *home, home_card_t *home_post) {
   text_set(self->page, "");
   text_set(self->post, "");
 
   text_t *out = copy(home->path);
   text_append(out, "/");
-  text_append(out, home_post->link->value);
+  text_append(out, home_post->path->value);
   text_t *in = copy(out);
   text_replace(in, ".html", ".post");
   text_t *file = alloc(text_t, "");

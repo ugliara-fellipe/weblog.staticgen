@@ -63,8 +63,8 @@ int main(int argc, char **argv) {
 
   home_compile(home, argv[1]);
 
-  list_for(home->posts, index, home_post_t, item, {
-    if (!text_compare(item->link, "")) {
+  list_for(home->cards, index, home_card_t, item, {
+    if (text_compare(item->type, "post") && !text_compare(item->path, "")) {
       post_compile(post, home, item);
     }
   });

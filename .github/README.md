@@ -55,46 +55,71 @@ written below.
 
 ```
 #
-# Copyright 2019 Fellipe Augusto Ugliara
+# Copyright 2020 Fellipe Augusto Ugliara
 #
-# Use of this source code is governed by an ISC license that can be found 
-# in the LICENSE file at https://github.com/ugliara-fellipe/weblog.pages
+# Content on this file is licensed under the Creative Commons Attribution 
+# 4.0 International License. To view a copy of this license: visit 
+# http://creativecommons.org/licenses/by/4.0/, or search for the CONTENT 
+# file at https://github.com/ugliara-fellipe/weblog.pages
 #
 
 weblog
-  title       "Writing Notebook"
-  description "Weblog - Writing Notebook"
-  keywords    "Weblog,Computer,Mathematics,Philosophy,Profile"
+  title [Writing Notebook]
+  brief [Weblog - Writing Notebook]
+  tags  [Mathematics,Philosophy,Profile,Storytelling]
 
 copyright
-  year   "2020"
-  holder "Fellipe Augusto Ugliara"
+  year  [2020]
+  owner [Fellipe Augusto Ugliara]
 
 license
-  link "https://github.com/ugliara-fellipe/ugliara-fellipe.github.io"
-  type "ISC"
-  file "LICENSE"
+  link  [https://github.com/ugliara-fellipe/ugliara-fellipe.github.io]
+  type  [ISC]
+  file  [LICENSE]
 
 content
-  link "https://github.com/ugliara-fellipe/ugliara-fellipe.github.io"
-  site "http://creativecommons.org/licenses/by/4.0/"
-  type "CC BY 4.0"
-  name "Creative Commons Attribution 4.0 International License"
-  file "CONTENT"
+  link  [https://github.com/ugliara-fellipe/ugliara-fellipe.github.io]
+  site  [http://creativecommons.org/licenses/by/4.0/]
+  type  [CC BY 4.0]
+  name  [Creative Commons Attribution 4.0 International License]
+  file  [CONTENT]
 
 post
-  date  "2021-01-28"
-  show  "January 28, 2021"
-  group "Profile"
-  link  "resume/resume.html"
-  title "Resume and Contact"
+  size  [large]
+  date  [2021-08-07]
+  show  [August 07, 2021]
+  group [Mathematics]
+  path  [mathbooks/mathbooks.html]
+  title [Mathematics Library]
+  text  [Knowledge is an asset that must be accessible to everyone. This post ]
+        [list a set of free books, that is an option for who want to learn ]
+        [math and does not support the high costs of books available on the ]
+        [market. The books are organized into: elementary math, foundations ]
+        [and philosophy, pure math, history and recreation.]
+
+offsite
+  size  [small]
+  date  [2021-07-23]
+  show  [July 23, 2021]
+  group [Storytelling]
+  link  [uncovered/uncovered.pdf]
+  title [Uncovered]
+  text  [An open tabletop storytelling game, that not use probabilistic ]
+        [rules. It contains the "Uncovered" game scenery and "Tabloid Ruleset".]
+
+note
+  size  [normal]
+  title [Talk with Author]
+  text  [Here are posted my open works. All the contents are under permissive ]
+        [licenses. Feel free to email me about the published topics.^^]
+        [Author email:^ugliara.fellipe@gmail.com]
 ```
 
 ### Post and its Elements
 
 The posts have a dialect that allows representing easily the elements of the 
 text. The possible elements in a post are paragraphs, bold texts, italic texts, 
-ordered lists, unordered lists, session titles, codes, quotes, links, images, 
+ordered lists, unordered lists, session titles, alerts, quotes, links, 
 and special symbols. A post code example is written in the next code box and 
 each element is detailed below.
 
@@ -103,31 +128,33 @@ each element is detailed below.
 # It is a Comment Block
 #
 
-It is a ``linebreak`` ^
-It is a `paragraph` !Link!post.html!
+It is a +italic+ break ^
+It is a *bold* {Text + url} or {Text * url}
 
-~First Item in Ordered List
-~Second Item in Ordered List
+++First Item in Ordered List
+++Second Item in Ordered List
 
-~~First Item in Unordered List
-~~Second Item in Unordered List
+**First Item in Unordered List
+**Second Item in Unordered List
 
-**Title
+[Title]
 
-!!!
-int i;
-int main() {
+[[SubTitle]]
 
-}
-!!!
++++
+Quote Text
++++
 
-***SubTitle
+***
+Alert Text
+***
 
-!!Image!!img.svg!!
+Commom ^
+! "$%~&'(),-./0123456789:;<=>?@ABCDEFGHIJKL
+MNOPQRSTUVWXYZ_`abcdefghijklmnopqrstuvwxyz|
 
-*
-Quote Text `Bold` More Quote Text '` '' '* '~ '! '^ '#
-*
+Special ^
+\\ \+ \* \^ \[ \] \# \{ \}
 ```
 
 #### Paragraph and Special Symbols
@@ -136,28 +163,28 @@ Inside the post tag to define a paragraph, only write the text, no specific
 symbol is required. The paragraphs are separated by empty lines. Use the 
 symbol ^ to add a line break in the paragraph. The symbols used to define 
 the post elements are considered special symbols, the list of them 
-is \` ' * ~ ! ^ and #. If a special symbol needs to be 
-written add a ' before it.
+is \\ \+ \* [ ] # } and {. If a special symbol needs to be 
+written add a \\ before it.
 
 #### Session and List
 
 There are two types of sessions and two types of lists. The session is defined 
-with symbol \*\*, and a subsession with symbol \*\*\*. The unordered list is 
-defined with symbol ~ before each item in the list, and ordered list with 
-symbol ~~ before each item in the list.
+with symbol [ session ], and a subsession with symbol [[ subssesion ]]. The 
+unordered list is defined with symbol \*\* before each item in the list, and 
+ordered list with symbol \+\+ before each item in the list.
 
-#### Code and Quote
+#### Alert and Quote
 
 These elements are similar, the text inside a symbol block will be 
-considered a code or quote. The code block is defined inside symbols 
-!!!, and the quote block is defined inside the symbols \*. Each block 
+considered a alert or quote. The alert block is defined inside symbols 
+\*\*\*, and the quote block is defined inside the symbols \+\+\+. Each block 
 opened with a symbol must be closed with the same symbol.
 
-#### Link, Image, Bold, and Italic
+#### Link, Bold, and Italic
 
-The bold and italic texts are easy, put them inside symbol \` to bold and 
-\`\` to italic. The link is defined with the symbol ! and the image with the 
-symbol !! like shown in the last code box. 
+The bold and italic texts are easy, put them inside symbol \* to bold and 
+\+ to italic. The link is defined with the symbols } { \+ or \* like shown in the 
+last code box. 
 
 ### Style and Icon Files
 

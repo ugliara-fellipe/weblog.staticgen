@@ -11,15 +11,18 @@
 #include "toolbelt.h"
 
 typedef struct {
+  text_t *type;
+  text_t *size;
   text_t *date;
   text_t *show;
   text_t *group;
   text_t *link;
   text_t *path;
   text_t *title;
-} home_post_t;
+  text_t *text;
+} home_card_t;
 
-def_prototype_header(home_post_t);
+def_prototype_header(home_card_t);
 
 typedef struct {
   recognizer_t *recognizer;
@@ -28,26 +31,27 @@ typedef struct {
   text_t *path;
 
   text_t *group;
-  home_post_t *post;
+  home_card_t *card;
+  text_t *value;
 
   text_t *weblog_title;
-  text_t *weblog_description;
-  text_t *weblog_keywords;
+  text_t *weblog_brief;
+  text_t *weblog_tags;
 
-  text_t *license_holder;
-  text_t *license_date;
+  text_t *copyright_year;
+  text_t *copyright_owner;
 
   text_t *license_link;
   text_t *license_type;
   text_t *license_file;
 
   text_t *content_link;
-  text_t *content_type;
-  text_t *content_file;
-  text_t *content_name;
   text_t *content_site;
+  text_t *content_type;
+  text_t *content_name;
+  text_t *content_file;
 
-  list_t *posts;
+  list_t *cards;
 
   text_t *page;
 } home_t;

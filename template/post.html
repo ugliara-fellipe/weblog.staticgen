@@ -1,5 +1,5 @@
 <!--
-Copyright $date $holder
+Copyright $year $owner
 
 Use of this source code is governed by an $type license that can be found
 in the $file file at $link
@@ -14,10 +14,10 @@ for the $content_file file at $content_link
 
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="$description">
-  <meta name="keywords" content="$keywords">
-  <meta name="author" content="$holder">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="$brief">
+  <meta name="keywords" content="$tags">
+  <meta name="author" content="$owner">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>$title</title>
 
@@ -29,7 +29,14 @@ for the $content_file file at $content_link
 <body>
 
   <header>
-    <a href="../index.html">$title</a>
+    <div class="grid-header">
+      <div class="title"> 
+        <a href="../index.html">$title</a>
+      </div>
+      <div class="author">
+        <p>by $owner</p>
+      </div>
+    </div>
   </header>
 
   <hr>
@@ -40,7 +47,7 @@ for the $content_file file at $content_link
     <div class="title">
       <h1>$post_title</h1>
       <div class="info">
-        <time datetime="$post_date">$post_show</time> # $post_group
+        <time datetime="$post_date">$post_show</time> - $post_group
       </div>
     </div>
 
@@ -52,7 +59,7 @@ for the $content_file file at $content_link
   <hr>
 
   <footer>
-    <p id="copyright">Copyright $date $holder</p>
+    <p id="copyright">Copyright $year $owner</p>
     <p id="license">Site content is licensed under a <a rel="license" href="$content_site" target="_blank">$content_type</a></p>
   </footer>
 
